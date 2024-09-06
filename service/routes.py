@@ -118,7 +118,7 @@ def get_product(id):
     product = Product.find(id)
     if not product:
         abort(status.HTTP_404_NOT_FOUND,f"Product with id '{id}' not found")
-    return product.serialize, status.HTTP_200_OK
+    return product.serialize(), status.HTTP_200_OK
 
 ######################################################################
 # U P D A T E   A   P R O D U C T
