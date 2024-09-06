@@ -169,11 +169,26 @@ class TestProductRoutes(TestCase):
 
     def test_read_a_product(self):
         """It Service Should Read a Product"""
-        raise Exception("Test No Implemented")
+        product = self._create_products(1)[0]
+        id = product.id
+        response = self.client.get(f"{BASE_URL}/{id}")
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(data["name"],product.name)
 
     def test_update_a_product(self):
         """It Service Should Update a Product"""
-        raise Exception("Test No Implemented")
+        # create a product to update
+        test_product = ProductFactory()
+        response = self.client.post(BASE_URL, json=test_product.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # update the product
+        new_product = response.get_json()
+        new_product["description"] = "unknown"
+        response = self.client.put(f"{BASE_URL}/{new_product['id']}", json=new_product)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        updated_product = response.get_json()
+        self.assertEqual(updated_product["description"], "unknown")
 
     def test_delete_a_product(self):
         """It Service Should Delete a Product"""
@@ -197,15 +212,49 @@ class TestProductRoutes(TestCase):
 
     def test_list_products_by_name(self):
         """It Service Should List Products by Name"""
-        raise Exception("Test No Implemented")
+        products = self._create_products(10)
+        name = products[0].name
+        found = [product for product in products if product.name == name]
+        found_count = len(found)
+        logging.debug("Found Products [%d] %s", found_count, found)
+        # test for available
+        response = self.client.get(BASE_URL, query_string=f"name={name}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), found_count)
+        # check the data just to be sure
+        for product in data:
+            self.assertEqual(product["name"], name)
 
     def test_list_products_by_category(self):
-        """It Service Should List Products by Category"""
-        raise Exception("Test No Implemented")
+        products = self._create_products(10)
+        category = products[0].category
+        found = [product for product in products if product.category == category]
+        found_count = len(found)
+        logging.debug("Found Products [%d] %s", found_count, found)
+        # test for available
+        response = self.client.get(BASE_URL, query_string=f"category={category.name}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), found_count)
+        # check the data just to be sure
+        for product in data:
+            self.assertEqual(product["category"], category.name)
 
     def test_list_products_by_availability(self):
         """It Service Should List Products by Availability"""
-        products = 
+        products = self._create_products(10)
+        found = [product for product in products if product.available is True]
+        available_count = len(found)        
+        # test for available
+        response = self.client.get(BASE_URL, query_string="available=true")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), available_count)
+        # check the data just to be sure
+        for product in data:
+            self.assertEqual(product["available"], True)
+        
 
 
 
