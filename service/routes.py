@@ -117,12 +117,13 @@ def get_product(id):
     """Read a product"""
     product = Product.find(id)
     if not product:
-        abort(status.HTTP_404_NOT_FOUND,f"Product with id '{id}' not found")
+        abort(status.HTTP_404_NOT_FOUND, f"Product with id '{id}' not found")
     return product.serialize(), status.HTTP_200_OK
 
 ######################################################################
 # U P D A T E   A   P R O D U C T
 ######################################################################
+
 
 @app.route("/products/<int:product_id>", methods=["PUT"])
 def update_products(product_id):
@@ -146,6 +147,7 @@ def update_products(product_id):
 ######################################################################
 # D E L E T E   A   P R O D U C T
 ######################################################################
+
 
 @app.route("/products/<id>", methods=["DELETE"])
 def delete_product(id):
@@ -191,4 +193,3 @@ def list_products():
     results = [product.serialize() for product in products]
     app.logger.info("[%s] Products returned", len(results))
     return results, status.HTTP_200_OK
-
