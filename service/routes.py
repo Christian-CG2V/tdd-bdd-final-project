@@ -98,6 +98,13 @@ def create_products():
 # L I S T   A L L   P R O D U C T S
 ######################################################################
 
+@app.route("/products")
+def get_list():
+    products = Product.all()
+    results = [product.serialize() for product in products]
+
+    return  results, status.HTTP_200_OK
+
 #
 # PLACE YOUR CODE TO LIST ALL PRODUCTS HERE
 #
@@ -122,7 +129,15 @@ def create_products():
 # D E L E T E   A   P R O D U C T
 ######################################################################
 
+@app.route("/products/<id>", methods=["DELETE"])
+def delete_product(id):
+    """Delete a Product"""
 
+    product = Product.find(id)
+    if product:
+        product.delete()
+
+    return "", status.HTTP_204_NO_CONTENT
 #
 # PLACE YOUR CODE TO DELETE A PRODUCT HERE
 #

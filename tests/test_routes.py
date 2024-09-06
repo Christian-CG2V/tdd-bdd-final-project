@@ -167,6 +167,48 @@ class TestProductRoutes(TestCase):
     # ADD YOUR TEST CASES HERE
     #
 
+    def test_read_a_product(self):
+        """It Service Should Read a Product"""
+        raise Exception("Test No Implemented")
+
+    def test_update_a_product(self):
+        """It Service Should Update a Product"""
+        raise Exception("Test No Implemented")
+
+    def test_delete_a_product(self):
+        """It Service Should Delete a Product"""
+        product = self._create_products(1)[0]
+        product.create()
+        id = product.id
+        response = self.client.delete(f"{BASE_URL}/{id}")
+        self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)
+
+        
+
+    def test_list_all_products(self):
+        """It Service Should List all Products"""
+        products = self._create_products(11)
+        response = self.client.get(BASE_URL)
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data),11)
+
+        
+
+    def test_list_products_by_name(self):
+        """It Service Should List Products by Name"""
+        raise Exception("Test No Implemented")
+
+    def test_list_products_by_category(self):
+        """It Service Should List Products by Category"""
+        raise Exception("Test No Implemented")
+
+    def test_list_products_by_availability(self):
+        """It Service Should List Products by Availability"""
+        products = 
+
+
+
     ######################################################################
     # Utility functions
     ######################################################################
