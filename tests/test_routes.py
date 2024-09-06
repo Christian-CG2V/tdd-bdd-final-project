@@ -170,8 +170,8 @@ class TestProductRoutes(TestCase):
     def test_read_a_product(self):
         """It Service Should Read a Product"""
         product = self._create_products(1)[0]
-        id = product.id
-        response = self.client.get(f"{BASE_URL}/{id}")
+        _id = product.id
+        response = self.client.get(f"{BASE_URL}/{_id}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(data["name"], product.name)
@@ -201,8 +201,8 @@ class TestProductRoutes(TestCase):
         """It Service Should Delete a Product"""
         product = self._create_products(1)[0]
         product.create()
-        id = product.id
-        response = self.client.delete(f"{BASE_URL}/{id}")
+        _id = product.id
+        response = self.client.delete(f"{BASE_URL}/{_id}")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_list_all_products(self):
@@ -230,6 +230,8 @@ class TestProductRoutes(TestCase):
             self.assertEqual(product["name"], name)
 
     def test_list_products_by_category(self):
+        """It Should list product by category"""
+
         products = self._create_products(10)
         category = products[0].category
         found = [product for product in products if product.category == category]

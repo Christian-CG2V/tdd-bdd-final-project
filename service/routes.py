@@ -112,12 +112,12 @@ def create_products():
 #
 # PLACE YOUR CODE HERE TO READ A PRODUCT
 #
-@app.route("/products/<id>", methods=["GET"])
-def get_product(id):
+@app.route("/products/<product_id>", methods=["GET"])
+def get_product(product_id):
     """Read a product"""
-    product = Product.find(id)
+    product = Product.find(product_id)
     if not product:
-        abort(status.HTTP_404_NOT_FOUND, f"Product with id '{id}' not found")
+        abort(status.HTTP_404_NOT_FOUND, f"Product with id '{product_id}' not found")
     return product.serialize(), status.HTTP_200_OK
 
 ######################################################################
@@ -149,11 +149,11 @@ def update_products(product_id):
 ######################################################################
 
 
-@app.route("/products/<id>", methods=["DELETE"])
-def delete_product(id):
+@app.route("/products/<product_id>", methods=["DELETE"])
+def delete_product(product_id):
     """Delete a Product"""
 
-    product = Product.find(id)
+    product = Product.find(product_id)
     if product:
         product.delete()
 
