@@ -4,8 +4,9 @@ Environment for Behave Testing
 from os import getenv
 from selenium import webdriver
 
-WAIT_SECONDS = int(getenv('WAIT_SECONDS', '30'))
-BASE_URL = getenv('BASE_URL', 'http://localhost:8080')
+WAIT_SECONDS = int(getenv('WAIT_SECONDS', '60'))
+#BASE_URL = getenv('BASE_URL', 'http://localhost:8080')
+BASE_URL = getenv('BASE_URL', 'http://0.0.0.0:5000')
 DRIVER = getenv('DRIVER', 'firefox').lower()
 
 
