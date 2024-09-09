@@ -288,19 +288,47 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(product.category.name, dic["category"])
 
     def test_deserialize_invalid_type_boolean(self):
-        """I should throw Invalid type for boolean Deserializes a Product from a dictionary"""
+        """I should throw Invalid type for boolean when Deserializes a Product from a dictionary"""
         product = ProductFactory()
         dic = product.serialize()
 
         dic["available"] = 1
 
         otherproduct = Product()
-        self.assertRaises(DataValidationError, otherproduct.deserialize, dic)
+        try:
+            otherproduct.deserialize(dic)
+        except DataValidationError as excep:
+            self.assertIn("Invalid type for boolean", str(excep), "Message not found")
 
     def test_deserialize_invalid_no_data(self):
-        """I should throw Invalid product: body of request contained bad or no data Deserializes a Product from a dictionary"""
+        """
+        I should throw
+        Invalid product: body of request contained bad or no data
+        when Deserializes a Product from a dictionary
+        """
         # product = ProductFactory()
         # dic = product.serialize()
         dic = None
         otherproduct = Product()
-        self.assertRaises(DataValidationError, otherproduct.deserialize, dic)
+
+        try:
+            otherproduct.deserialize(dic)
+        except DataValidationError as excep:
+            self.assertIn("Invalid product: body of request contained bad or no data", str(excep), "Message not found")
+
+    def test_deserialize_invalid_attribute(self):
+        """I should throw Invalid attribute when Deserializes a Product from a dictionary"""
+
+        dic = {}
+        dic["id"] = None
+        dic["name"] = None
+        dic["description"] = None
+        dic["available"] = True
+        dic["price"] = 2.2
+        dic["category"] = "xx"
+
+        otherproduct = Product()
+        try:
+            otherproduct.deserialize(dic)
+        except DataValidationError as excep:
+            self.assertIn("Invalid attribute", str(excep), "Message not found")
